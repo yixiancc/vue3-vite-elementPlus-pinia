@@ -1,6 +1,7 @@
 # vue3 + vite + elementPlue + pinia
 
 ## 基本实现很多类后台项目布局所需参数，相关配置在router中查看
+### src/components中还有可以通用使用的组件包括信息弹窗，动态表单可自定义使用
 
 ## Project setup
 ```
