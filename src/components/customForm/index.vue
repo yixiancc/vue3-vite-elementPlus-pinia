@@ -12,12 +12,18 @@ const props = defineProps({
             return {}
         }
     },
+    // form表单的校验规则
     customFormRules: {
         type: Object,
         default: () => {
             return {}
         }
     },
+    labelWidth: {
+        type: String,
+        default: "1.2rem"
+    },
+    // form表单的数据
     customFormItemArr: {
         type: Array,
         default: () => {
@@ -34,16 +40,10 @@ const dialogVisible = ref(props.dialogVisible)
 const customFormModel = ref({})
 watchEffect(() => {
     dialogVisible.value = props.dialogVisible
-    if (dialogVisible.value) {
+    if (dialogVisible.value === true) {
         customFormModel.value = cloneDeep(props.customFormModel)
     }
 })
-
-// form表单的校验规则
-const customFormRules = ref(props.customFormRules)
-
-// form表单的数据
-const customFormItemArr = ref(props.customFormItemArr)
 
 // 清除上一次留下的校验警告
 const customFormRef = ref(null)
@@ -90,9 +90,10 @@ function submitForm() { // 提交表单，并将表单数据传给父组件
                     添加绑定
                 </div>
             </template>
-            <div class="dialogBody" v-if="customFormItemArr.length != 0">
-                <el-form ref="customFormRef" :model="customFormModel" label-width="80px" :rules="customFormRules">
-                    <el-form-item :label="data.label" :prop="data.prop" v-for="(data, index) in customFormItemArr"
+            <div class="dialogBody" v-if="props.customFormItemArr.length != 0">
+                <el-form ref="customFormRef" :model="customFormModel" :label-width="props.labelWidth"
+                         :rules="props.customFormRules">
+                    <el-form-item :label="data.label" :prop="data.prop" v-for="(data, index) in props.customFormItemArr"
                                   :key="index" v-show="data.show ? data.show : true">
                         <el-input v-if="data.type == 'input'" v-model="customFormModel[data.prop]"
                                   :placeholder="data.placeholder"
