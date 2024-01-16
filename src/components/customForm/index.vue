@@ -108,7 +108,10 @@ function submitForm() { // 提交表单，并将表单数据传给父组件
                         <el-input v-if="data.type == 'input'" v-model="customFormModel[data.prop]"
                                   :placeholder="data.placeholder"
                                   @change="changeValue(index, data.prop, customFormModel[data.prop])"
-                                  clearable/>
+                                  clearable>
+                            <template #prepend v-if="data.prepend">{{ data.prependText }}</template>
+                            <template #append v-if="data.append">{{ data.appendText }}</template>
+                        </el-input>
                         
                         <el-select v-if="data.type == 'select'" v-model="customFormModel[data.prop]"
                                    :placeholder="data.placeholder"
@@ -164,6 +167,14 @@ function submitForm() { // 提交表单，并将表单数据传给父组件
         .dialogBody {
             width: 100%;
             padding: 0.1rem 0.8rem;
+            
+            .el-input-group__append, .el-input-group__prepend {
+                border: 0.01rem solid #1E57B6;
+                background: #14324D;
+                color: #FFF;
+                box-shadow: none;
+                border-left: none;
+            }
             
             .el-form-item:last-child {
                 margin-bottom: 0;
