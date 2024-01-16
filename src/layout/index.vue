@@ -33,7 +33,8 @@ const isTopAndBottom = ref(true) // 上下布局，指的是上是一个整体�
             </div>
         </div>
     </div>
-    
+
+    <!--    上下布局，上整体，下左右布局-->
     <div class="all-layout-top-bottom" v-if="isTopAndBottom">
         <div class="all-layout-top">
             <navbar></navbar>
