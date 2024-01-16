@@ -13,7 +13,7 @@ const equipmentBindTableTotal = ref(0)
 getProjectList()
 
 function getProjectList() {
-    post("", {
+    post("/icc4/projectRollerInfo/listPageProjectFirst", {
         size: equipmentBindTableSize.value,
         current: equipmentBindTablePage.value,
         param: {
@@ -22,7 +22,7 @@ function getProjectList() {
     }).then(res => {
         res.records.forEach(data => {
             data.hasChildren = true
-            equipmentBindTableRef.value.toggleRowExpansion(data)
+            equipmentBindTableRef.value.toggleRowExpansion(data, false)
         })
         equipmentBindTableData.value = res.records
     })
@@ -38,7 +38,7 @@ function pageChange() {
 }
 
 function loadChidren(row, treeNode, resolve) {
-    post("", {
+    post("/icc4/projectRollerInfo/listPage", {
         size: 9999,
         current: 1,
         param: {
@@ -56,7 +56,7 @@ import { ElMessageBox } from "element-plus"
 
 function delTableData(row) {
     ElMessageBox.confirm(
-        "确认删除？",
+        "确认删除该绑定？",
         "提示",
         {
             confirmButtonText: "删除",
@@ -66,7 +66,7 @@ function delTableData(row) {
             "close-on-press-escape": false
         }
     ).then(() => {
-        post("", {
+        post("/icc4/projectRollerInfo/del", {
             id: row.id
         }).then(res => {
             getProjectList()
@@ -146,7 +146,7 @@ const customFormItemArr = ref([
 getOptionsArr()
 
 function getOptionsArr() {
-    post("", {
+    post("/icc4/companyProject/listPage", {
         size: 9999,
         current: 1,
         param: {
@@ -156,13 +156,13 @@ function getOptionsArr() {
         customFormItemArr.value[0].optionsArr = res.records
     })
     
-    post("", {
+    post("/icc4/roller/list", {
         companyId: localStorage.getItem("companyId")
     }).then(res => {
         customFormItemArr.value[1].optionsArr = res
     })
     
-    post("", {
+    post("/icc4/equipment/listByType", {
         companyId: localStorage.getItem("companyId")
     }).then(res => {
         let arr = res
@@ -188,6 +188,11 @@ function editTableData(row) {
 
 function addBind() {
     customSubmitType.value = 1
+    delete customFormModel.value.id
+    customFormModel.value.projectId = ""
+    customFormModel.value.rollerId = ""
+    customFormModel.value.rtkId = ""
+    customFormModel.value.vibrateId = ""
     dialogVisible.value = true
 }
 
@@ -198,9 +203,9 @@ function closeDialog() {
 function submitForm(obj, type) {
     let url = ""
     if (type == 1) {
-        url = ""
+        url = "/icc4/projectRollerInfo/create"
     } else if (type == 2) {
-        url = ""
+        url = "/icc4/projectRollerInfo/update"
     }
     post(url, obj).then(res => {
         dialogVisible.value = false
@@ -227,7 +232,7 @@ function submitForm(obj, type) {
         </div>
         
         <div class="equipmentBind-table">
-            <el-table ref="equipmentBindTableRef" :data="equipmentBindTableData" max-height="500px" row-key="id" lazy
+            <el-table ref="equipmentBindTableRef" :data="equipmentBindTableData" max-height="5rem" row-key="id" lazy
                       :load="loadChidren"
                       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
                 <el-table-column prop="projectName" label="项目名称"/>
@@ -367,7 +372,7 @@ function submitForm(obj, type) {
     
     .equipmentBind-table {
         width: 100%;
-        margin-top: 30px;
+        margin-top: 0.3rem;
         
         :deep(.el-table) {
             width: 100%;
