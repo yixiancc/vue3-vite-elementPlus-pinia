@@ -1,11 +1,248 @@
 <script setup>
+import { ref, inject } from "vue"
 
+const loginForm = ref({
+    username: "",
+    password: "",
+    rememberMe: false
+})
+
+if (localStorage.getItem("username")) {
+    loginForm.value.username = localStorage.getItem("username")
+    loginForm.value.password = localStorage.getItem("password")
+    loginForm.value.rememberMe = true
+}
+
+const isLoading = ref(false)
+import router from "@/router/index.js";
+
+const customMessage = inject("$customMessage")
+const post = inject("$post")
+
+function loginSystem() {
+    isLoading.value = true
+    post("", loginForm.value).then(res => {
+        localStorage.clear()
+        if (loginForm.value.rememberMe) {
+            localStorage.setItem("username", loginForm.value.username)
+            localStorage.setItem("password", loginForm.value.password)
+        }
+        localStorage.setItem("token", res.token)
+        localStorage.setItem("companyId", res.companyId)
+        customMessage({
+            type: "success",
+            content: "登陆成功！",
+            duration: 800
+        })
+        setTimeout(() => {
+            router.push("/")
+            isLoading.value = false
+        }, 500)
+    }).catch(err => {
+        isLoading.value = false
+        console.log(err)
+    })
+}
 </script>
 
 <template>
-    login
+    <div class="login-index">
+        <div class="login-div">
+            <div class="login-div-title">
+                啦啦啦
+            </div>
+            <div class="login-div-form">
+                <div class="login-div-form-title">
+                    账号登录
+                </div>
+                <div class="login-div-form-input">
+                    <div>
+                        <el-icon>
+                            <User/>
+                        </el-icon>
+                    </div>
+                    <div>
+                        <el-input v-model="loginForm.username" placeholder="请输入账号"></el-input>
+                    </div>
+                </div>
+                
+                <div class="login-div-form-input">
+                    <div>
+                        <el-icon>
+                            <Key/>
+                        </el-icon>
+                    </div>
+                    <div>
+                        <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"
+                                  show-password></el-input>
+                    </div>
+                </div>
+                
+                <div class="login-div-form-checkbox">
+                    <el-checkbox v-model="loginForm.rememberMe" label="记住密码"/>
+                </div>
+                
+                <div class="login-div-form-button">
+                    <el-button type="primary" @click="loginSystem()" v-loading="isLoading"
+                               :disabled="isLoading">
+                        登录
+                    </el-button>
+                </div>
+            </div>
+            
+            <div class="login-div-logo">
+                <img src="@/assets/images/loginLogo.png">
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped lang="less">
+.login-index {
+    width: 100%;
+    height: 100%;
+    padding: 0 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: url("@/assets/images/loginBack.png") no-repeat fixed;
+    background-size: cover;
+    
+    .login-div {
+        width: 6.2rem;
+        padding: 0.5rem 0.65rem;
+        border-radius: 0.04rem;
+        border: 0.04rem solid rgba(68, 137, 254, 0.2);
+        background: linear-gradient(218deg, rgba(37, 37, 37, 0.75) 2.49%, rgba(37, 37, 37, 0) 98.84%);
+        backdrop-filter: blur(0.2rem);
+        
+        &-title {
+            width: 100%;
+            color: #4489FE;
+            font-size: 0.42rem;
+            font-weight: 700;
+            letter-spacing: 0.042rem;
+            text-align: center;
+        }
+        
+        &-form {
+            width: 100%;
+            margin-top: 0.5rem;
+            
+            &-title {
+                width: 100%;
+                color: #FFF;
+                font-size: 0.22rem;
+                font-weight: 500;
+                line-height: 0.22rem;
+            }
+            
+            &-input {
+                width: 100%;
+                margin-top: 0.2rem;
+                
+                > div:nth-child(1) {
+                    width: 100%;
+                    font-size: 0.24rem;
+                    color: rgba(68, 137, 254, 1)
+                }
+                
+                > div:nth-child(2) {
+                    width: 100%;
+                    margin-top: 0.05rem
+                }
+            }
+            
+            &-checkbox {
+                width: 100%;
+                margin-top: 0.2rem;
+            }
+            
+            &-button {
+                width: 100%;
+                margin-top: 0.25rem
+            }
+        }
+        
+        &-logo {
+            width: 100%;
+            margin-top: 0.4rem;
+            text-align: center;
+            
+            > img {
+                width: 3rem;
+            }
+        }
+    }
+}
 
+:deep(.el-input--small) {
+    width: 100%;
+    display: block;
+    
+    .el-input__wrapper {
+        width: 100%;
+        padding: 0.12rem 0.16rem;
+        border: 0.01rem solid #4B5563;
+        box-shadow: none;
+        background: #374151;
+        
+        .el-input__inner {
+            height: 0.22rem;
+            font-size: 0.18rem;
+            color: #fff;
+        }
+        
+        .el-input__prefix, .el-input__suffix {
+            font-size: 0.22rem;
+            color: rgba(68, 137, 254, 1)
+        }
+        
+        .el-input__password {
+            font-size: 0.22rem;
+            color: rgba(68, 137, 254, 1)
+        }
+    }
+}
+
+:deep(.el-checkbox--small) {
+    display: flex;
+    align-items: center;
+    
+    .el-checkbox__inner {
+        border: 0.01rem solid #4B5563;
+        background: #374151;
+    }
+    
+    .el-checkbox__inner:after {
+        left: 0.04rem;
+        border-width: 0.02rem;
+        border-color: rgb(68, 137, 254);
+    }
+    
+    .el-checkbox__label {
+        color: #fff;
+    }
+}
+
+:deep(.el-button--small) {
+    width: 100%;
+    height: auto;
+    padding: 0.15rem 0;
+    font-size: 0.2rem;
+    letter-spacing: 0.1rem;
+    text-align: center;
+    border-radius: 0.02rem;
+    background: #4489FE;
+    border: none;
+    outline: none;
+    
+    .el-loading-mask {
+        background: #4489FE;
+        
+        .el-loading-spinner .path {
+            stroke: #fff;
+        }
+    }
+}
 </style>
