@@ -6,6 +6,11 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
+    // form表单的提交按钮的类型，一般情况下1代表新增的提交按钮，2代表修改的提交按钮
+    customSubmitType: {
+        type: Number,
+        default: 1
+    },
     customFormModel: {
         type: Object,
         default: () => {
@@ -70,7 +75,7 @@ function closeDialog() { // 关闭弹窗
 function submitForm() { // 提交表单，并将表单数据传给父组件
     customFormRef.value.validate((valid) => {
         if (valid) {
-            emits("submitForm", customFormModel.value);
+            emits("submitForm", customFormModel.value, props.customSubmitType);
         } else {
             return false;
         }
