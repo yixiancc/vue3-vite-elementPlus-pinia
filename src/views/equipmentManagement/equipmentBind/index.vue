@@ -4,7 +4,7 @@ import customForm from "@/components/customForm/index.vue"
 
 const post = inject("$post")
 
-
+const equipmentBindTableRef = ref(null)
 const equipmentBindTableData = ref([])
 const equipmentBindTablePage = ref(1)
 const equipmentBindTableSize = ref(10)
@@ -13,7 +13,7 @@ const equipmentBindTableTotal = ref(0)
 getProjectList()
 
 function getProjectList() {
-    post("/icc4/projectRollerInfo/listPage", {
+    post("/icc4/projectRollerInfo/listPageProjectFirst", {
         size: equipmentBindTableSize.value,
         current: equipmentBindTablePage.value,
         param: {
@@ -22,6 +22,7 @@ function getProjectList() {
     }).then(res => {
         res.records.forEach(data => {
             data.hasChildren = true
+            equipmentBindTableRef.value.toggleRowExpansion(data)
         })
         equipmentBindTableData.value = res.records
     })
@@ -53,7 +54,7 @@ function loadChidren(row, treeNode, resolve) {
 
 import { ElMessageBox } from "element-plus"
 
-function delTableData() {
+function delTableData(row) {
     ElMessageBox.confirm(
         "确认删除？",
         "提示",
@@ -65,11 +66,16 @@ function delTableData() {
             "close-on-press-escape": false
         }
     ).then(() => {
-    
+        post("/icc4/projectRollerInfo/del", {
+            id: row.id
+        }).then(res => {
+            getProjectList()
+        })
     })
 }
 
 const dialogVisible = ref(false)
+const customSubmitType = ref(1)
 const customFormModel = ref({
     projectId: "",
     rollerId: "",
@@ -170,7 +176,18 @@ function getOptionsArr() {
     })
 }
 
+function editTableData(row) {
+    customFormModel.value.id = row.id
+    customFormModel.value.projectId = row.projectId
+    customFormModel.value.rollerId = row.rollerId
+    customFormModel.value.rtkId = row.rtkId
+    customFormModel.value.vibrateId = row.vibrateId
+    customSubmitType.value = 2
+    dialogVisible.value = true
+}
+
 function addBind() {
+    customSubmitType.value = 1
     dialogVisible.value = true
 }
 
@@ -178,8 +195,14 @@ function closeDialog() {
     dialogVisible.value = false
 }
 
-function submitForm(obj) {
-    post("/icc4/projectRollerInfo/create", obj).then(res => {
+function submitForm(obj, type) {
+    let url = ""
+    if (type == 1) {
+        url = ""
+    } else if (type == 2) {
+        url = ""
+    }
+    post(url, obj).then(res => {
         dialogVisible.value = false
         getProjectList()
     })
@@ -204,7 +227,7 @@ function submitForm(obj) {
         </div>
         
         <div class="equipmentBind-table">
-            <el-table :data="equipmentBindTableData" max-height="500px" row-key="id" lazy
+            <el-table ref="equipmentBindTableRef" :data="equipmentBindTableData" max-height="500px" row-key="id" lazy
                       :load="loadChidren"
                       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
                 <el-table-column prop="projectName" label="项目名称"/>
@@ -229,12 +252,12 @@ function submitForm(obj) {
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
-                    <template #default>
+                    <template #default="{row}">
                         <div class="tableOperationClass">
-                            <el-button type="primary">
+                            <el-button type="primary" @click="editTableData(row)">
                                 编辑
                             </el-button>
-                            <el-button type="danger" @click="delTableData">
+                            <el-button type="danger" @click="delTableData(row)">
                                 删除
                             </el-button>
                         </div>
@@ -256,7 +279,8 @@ function submitForm(obj) {
             />
         </div>
         
-        <custom-form :dialogVisible="dialogVisible" :customFormModel="customFormModel"
+        <custom-form :dialogVisible="dialogVisible" :customSubmitType="customSubmitType"
+                     :customFormModel="customFormModel"
                      :customFormRules="customFormRules" :customFormItemArr="customFormItemArr"
                      @closeDialog="closeDialog" @submitForm="submitForm"></custom-form>
     </div>
