@@ -68,8 +68,13 @@ function closeDialog() { // 关闭弹窗
 }
 
 function submitForm() { // 提交表单，并将表单数据传给父组件
-    emits("submitForm", customFormModel.value);
-    emits("closeDialog");
+    customFormRef.value.validate((valid) => {
+        if (valid) {
+            emits("submitForm", customFormModel.value);
+        } else {
+            return false;
+        }
+    });
 }
 </script>
 
