@@ -12,7 +12,7 @@ customMessage({
 ```
 ### 具体可查看src/components/customMessage/index.vue内容
 
-### 其中动态表单可以在src/views/equipmentManagement/equipmentBind/index.vue查看到部分使用方法
+### 其中动态表单可以在src/views/equipmentManagement/equipmentBind/index.vue和src/views/equipmentManagement/equipmentInfo/index.vue中查看到部分使用方法
 
 ### 在src/request/http.js中自定义了接口调用方式以及拦截器处理方式，可查看
 
