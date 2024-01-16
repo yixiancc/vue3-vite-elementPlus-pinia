@@ -104,7 +104,7 @@ function submitForm() { // 提交表单，并将表单数据传给父组件
                 <el-form ref="customFormRef" :model="customFormModel" :label-width="props.labelWidth"
                          :rules="props.customFormRules">
                     <el-form-item :label="data.label" :prop="data.prop" v-for="(data, index) in props.customFormItemArr"
-                                  :key="index" v-show="data.show ? data.show : true">
+                                  :key="index">
                         <el-input v-if="data.type == 'input'" v-model="customFormModel[data.prop]"
                                   :placeholder="data.placeholder"
                                   @change="changeValue(index, data.prop, customFormModel[data.prop])"
