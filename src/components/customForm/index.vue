@@ -93,7 +93,7 @@ function submitForm() { // 提交表单，并将表单数据传给父组件
             <div class="dialogBody" v-if="customFormItemArr.length != 0">
                 <el-form ref="customFormRef" :model="customFormModel" label-width="80px" :rules="customFormRules">
                     <el-form-item :label="data.label" :prop="data.prop" v-for="(data, index) in customFormItemArr"
-                                  :key="index" v-show="data.show">
+                                  :key="index" v-show="data.show ? data.show : true">
                         <el-input v-if="data.type == 'input'" v-model="customFormModel[data.prop]"
                                   :placeholder="data.placeholder"
                                   @change="changeValue(index, data.prop, customFormModel[data.prop])"
