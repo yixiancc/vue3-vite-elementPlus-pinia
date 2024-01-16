@@ -10,7 +10,8 @@ customMessage({
     duration: 800
 })
 ```
-### 
+### 具体可查看src/components/customMessage/index.vue内容
+
 ### 其中动态表单可以在src/views/equipmentManagement/equipmentBind/index.vue查看到部分使用方法
 
 ## Project setup
