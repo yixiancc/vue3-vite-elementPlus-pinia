@@ -14,6 +14,8 @@ customMessage({
 
 ### 其中动态表单可以在src/views/equipmentManagement/equipmentBind/index.vue查看到部分使用方法
 
+### 在src/request/http.js中自定义了接口调用方式以及拦截器处理方式，可查看
+
 ## Project setup
 ```
 npm install
