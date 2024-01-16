@@ -13,7 +13,7 @@ const equipmentBindTableTotal = ref(0)
 getProjectList()
 
 function getProjectList() {
-    post("/icc4/projectRollerInfo/listPageProjectFirst", {
+    post("", {
         size: equipmentBindTableSize.value,
         current: equipmentBindTablePage.value,
         param: {
@@ -38,7 +38,7 @@ function pageChange() {
 }
 
 function loadChidren(row, treeNode, resolve) {
-    post("/icc4/projectRollerInfo/listPage", {
+    post("", {
         size: 9999,
         current: 1,
         param: {
@@ -66,7 +66,7 @@ function delTableData(row) {
             "close-on-press-escape": false
         }
     ).then(() => {
-        post("/icc4/projectRollerInfo/del", {
+        post("", {
             id: row.id
         }).then(res => {
             getProjectList()
@@ -146,7 +146,7 @@ const customFormItemArr = ref([
 getOptionsArr()
 
 function getOptionsArr() {
-    post("/icc4/companyProject/listPage", {
+    post("", {
         size: 9999,
         current: 1,
         param: {
@@ -156,13 +156,13 @@ function getOptionsArr() {
         customFormItemArr.value[0].optionsArr = res.records
     })
     
-    post("/icc4/roller/list", {
+    post("", {
         companyId: localStorage.getItem("companyId")
     }).then(res => {
         customFormItemArr.value[1].optionsArr = res
     })
     
-    post("/icc4/equipment/listByType", {
+    post("", {
         companyId: localStorage.getItem("companyId")
     }).then(res => {
         let arr = res
