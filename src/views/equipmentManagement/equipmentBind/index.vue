@@ -3,6 +3,7 @@ import { inject, ref } from "vue"
 import customForm from "@/components/customForm/index.vue"
 
 const post = inject("$post")
+const customMessage = inject("$customMessage")
 
 const equipmentBindTableRef = ref(null)
 const equipmentBindTableData = ref([])
@@ -69,12 +70,18 @@ function delTableData(row) {
         post("/icc4/projectRollerInfo/del", {
             id: row.id
         }).then(res => {
+            customMessage({
+                type: "success",
+                content: "删除成功",
+                duration: 1000
+            })
             getProjectList()
         })
     })
 }
 
 const dialogVisible = ref(false)
+const customFormTitle = ref("")
 const customSubmitType = ref(1)
 const customFormModel = ref({
     projectId: "",
@@ -91,9 +98,6 @@ const customFormRules = ref({
     ],
     rtkId: [
         { required: true, message: "请选择RTK", trigger: "blur" }
-    ],
-    vibrateId: [
-        { required: true, message: "请选择振动模块", trigger: "blur" }
     ]
 })
 const customFormItemArr = ref([
@@ -143,9 +147,7 @@ const customFormItemArr = ref([
     }
 ])
 
-getOptionsArr()
-
-function getOptionsArr() {
+function getIsUnusedOptionsArr(isUnUsed) {
     post("/icc4/companyProject/listPage", {
         size: 9999,
         current: 1,
@@ -156,27 +158,39 @@ function getOptionsArr() {
         customFormItemArr.value[0].optionsArr = res.records
     })
     
-    post("/icc4/roller/list", {
-        companyId: localStorage.getItem("companyId")
-    }).then(res => {
-        customFormItemArr.value[1].optionsArr = res
-    })
-    
-    post("/icc4/equipment/listByType", {
-        companyId: localStorage.getItem("companyId")
-    }).then(res => {
-        let arr = res
-        arr.forEach(data => {
-            if (data.type == 1) {
-                customFormItemArr.value[2].optionsArr = data.list
-            } else if (data.type == 2) {
-                customFormItemArr.value[3].optionsArr = data.list
-            }
+    if (isUnUsed) {
+        post("/icc4/projectRollerInfo/listUnusedEquipment", {
+            companyId: localStorage.getItem("companyId")
+        }).then(res => {
+            customFormItemArr.value[1].optionsArr = res.rollerList
+            customFormItemArr.value[2].optionsArr = res.rtkList
+            customFormItemArr.value[3].optionsArr = res.vibrateList
         })
-    })
+    } else {
+        post("/icc4/roller/list", {
+            companyId: localStorage.getItem("companyId")
+        }).then(res => {
+            customFormItemArr.value[1].optionsArr = res
+        })
+        
+        post("/icc4/equipment/listByType", {
+            companyId: localStorage.getItem("companyId")
+        }).then(res => {
+            let arr = res
+            arr.forEach(data => {
+                if (data.type == 1) {
+                    customFormItemArr.value[2].optionsArr = data.list
+                } else if (data.type == 2) {
+                    customFormItemArr.value[3].optionsArr = data.list
+                }
+            })
+        })
+    }
 }
 
 function editTableData(row) {
+    customFormTitle.value = "编辑绑定"
+    getIsUnusedOptionsArr(false)
     customFormModel.value.id = row.id
     customFormModel.value.projectId = row.projectId
     customFormModel.value.rollerId = row.rollerId
@@ -187,6 +201,8 @@ function editTableData(row) {
 }
 
 function addBind() {
+    customFormTitle.value = "添加绑定"
+    getIsUnusedOptionsArr(true)
     customSubmitType.value = 1
     delete customFormModel.value.id
     customFormModel.value.projectId = ""
@@ -284,7 +300,7 @@ function submitForm(obj, type) {
             />
         </div>
         
-        <custom-form :dialogVisible="dialogVisible" :customSubmitType="customSubmitType"
+        <custom-form :dialogVisible="dialogVisible" :customFormTitle="customFormTitle" :customSubmitType="customSubmitType"
                      :customFormModel="customFormModel"
                      :customFormRules="customFormRules" :customFormItemArr="customFormItemArr"
                      @closeDialog="closeDialog" @submitForm="submitForm"></custom-form>
