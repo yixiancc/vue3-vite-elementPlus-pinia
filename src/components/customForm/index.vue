@@ -6,6 +6,10 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
+    customFormTitle: {
+        type: String,
+        default: ""
+    },
     // form表单的提交按钮的类型，一般情况下1代表新增的提交按钮，2代表修改的提交按钮
     customSubmitType: {
         type: Number,
@@ -97,7 +101,7 @@ function submitForm() { // 提交表单，并将表单数据传给父组件
         >
             <template #header="{ close }">
                 <div class="dialogTitle">
-                    添加绑定
+                    {{ props.customFormTitle }}
                 </div>
             </template>
             <div class="dialogBody" v-if="props.customFormItemArr.length != 0">
