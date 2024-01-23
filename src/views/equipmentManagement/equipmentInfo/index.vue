@@ -4,6 +4,7 @@ import customForm from "@/components/customForm/index.vue"
 import { ElMessageBox } from "element-plus";
 
 const post = inject("$post")
+const customMessage = inject("$customMessage")
 
 const rtkList = ref([])
 const vibrateList = ref([])
@@ -38,6 +39,7 @@ function getRoller() {
 }
 
 const dialogVisible = ref(false)
+const customFormTitle = ref("")
 const customSubmitType = ref(1)
 const customFormModel = ref({
     companyId: localStorage.getItem("companyId"),
@@ -163,6 +165,7 @@ const customFormItemArr = ref([
 ])
 
 function addRoller() {
+    customFormTitle.value = "添加压路机"
     customSubmitType.value = 1
     delete customFormModel.value.id
     customFormModel.value.number = ""
@@ -178,6 +181,7 @@ function addRoller() {
 }
 
 function editRoller(data) {
+    customFormTitle.value = "添加压路机" + data.id
     customSubmitType.value = 2
     customFormModel.value.id = data.id
     customFormModel.value.number = data.number
@@ -224,6 +228,11 @@ function delRoller(data) {
         post("/icc4/roller/del", {
             id: data.id
         }).then(res => {
+            customMessage({
+                type: "success",
+                content: "删除成功",
+                duration: 1000
+            })
             getRoller()
         })
     })
@@ -326,7 +335,7 @@ function delRoller(data) {
             </div>
         </div>
         
-        <custom-form :dialogVisible="dialogVisible" :customSubmitType="customSubmitType"
+        <custom-form :dialogVisible="dialogVisible" :customFormTitle="customFormTitle" :customSubmitType="customSubmitType"
                      :customFormModel="customFormModel"
                      :customFormRules="customFormRules" :customFormItemArr="customFormItemArr"
                      @closeDialog="closeDialog" @submitForm="submitForm"></custom-form>
