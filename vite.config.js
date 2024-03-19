@@ -1,10 +1,14 @@
 import { defineConfig } from "vite"
+
 import vue from "@vitejs/plugin-vue"
+import svgLoader from "vite-svg-loader";
+
 import { resolve } from "path"
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [vue(), svgLoader()],
 
     base: "/",
 
@@ -48,7 +52,7 @@ export default defineConfig({
         },
         open: true,
         host: true, // 可以根据环境不同，选择是否可以用ip访问
-        port: 15555, // 端口号
+        port: 19999, // 端口号
         strictPort: false, // 设为 true 时若端口已被占用则会直接退出，而不是尝试下一个可用端口。
         https: false,
         hmr: true //开启热更新

@@ -78,6 +78,8 @@ function activeMenu() {
         }
         
         > svg {
+            font-size: 0.18rem;
+            vertical-align: middle;
             width: 0.18rem;
             height: 0.18rem;
         }

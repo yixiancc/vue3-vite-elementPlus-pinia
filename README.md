@@ -16,6 +16,8 @@ customMessage({
 
 ### 在src/request/http.js中自定义了接口调用方式以及拦截器处理方式，可查看
 
+## 以上所有均可在iccc4.0项目，云南国土pc端项目看到使用示例，两个项目均使用本初始化项目开发
+
 ## Project setup
 ```
 npm install

@@ -6,8 +6,8 @@ import breadCrumb from "./components/breadCrumb/index.vue"
 
 import { ref } from "vue"
 // 布局展示条件
-const isLeftAndRight = ref(false) // 左右布局，指的是左上下，右上下布局
-const isTopAndBottom = ref(true) // 上下布局，指的是上是一个整体，下左右布局
+const isLeftAndRight = ref(true) // 左右布局，指的是左上下，右上下布局
+const isTopAndBottom = ref(false) // 上下布局，指的是上是一个整体，下左右布局
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const isTopAndBottom = ref(true) // 上下布局，指的是上是一个整体�
     <div class="all-layout-left-right" v-if="isLeftAndRight">
         <div class="all-layout-left">
             <div class="all-layout-left-title">
-                <img src="./images/menuTitleLogo.png">
+                <img src="">
             </div>
             <div class="all-layout-left-sidebar">
                 <sidebar></sidebar>
@@ -33,7 +33,7 @@ const isTopAndBottom = ref(true) // 上下布局，指的是上是一个整体�
             </div>
         </div>
     </div>
-
+    
     <!--    上下布局，上整体，下左右布局-->
     <div class="all-layout-top-bottom" v-if="isTopAndBottom">
         <div class="all-layout-top">

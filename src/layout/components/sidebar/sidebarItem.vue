@@ -93,7 +93,7 @@ function getImgSrc(meta) {
             v-if="isShowChildren(props.item.children, props.item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !props.item.alwaysShow">
             <component :is="linkType" v-bind="linkProps()">
                 <el-menu-item :index="resolvePath(onlyOneChild.path)">
-                    <component v-if="props.item.meta.elIcon" :is="props.item.meta.elIcon"></component>
+                    <component v-if="props.item.meta.elIcon || props.item.meta.svg" :is="props.item.meta.elIcon || props.item.meta.svg"></component>
                     <img v-if="props.item.meta.activeImage && props.item.meta.unactiveImage"
                          :src="getImgSrc(props.item.meta)">
                     <span>{{ props.item.meta.title }}</span>
@@ -103,7 +103,7 @@ function getImgSrc(meta) {
         
         <el-sub-menu v-else ref="subMenu" :index="resolvePath(props.item.path)" teleported>
             <template #title>
-                <component v-if="props.item.meta.elIcon" :is="props.item.meta.elIcon"></component>
+                <component v-if="props.item.meta.elIcon || props.item.meta.svg" :is="props.item.meta.elIcon || props.item.meta.svg"></component>
                 <img v-else :src="getImgSrc(props.item.meta)">
                 <span>{{ props.item.meta.title }}</span>
             </template>
