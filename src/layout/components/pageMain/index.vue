@@ -48,8 +48,8 @@ function showChildRouterView() {
 <style scoped lang="less">
 .page-main {
     width: 100%;
-    height: calc(100vh - var(--top-height) - 0.45rem);
-    max-height: calc(100vh - var(--top-height) - 0.45rem);
+    height: calc(100vh - var(--top-height) - 0.6rem);
+    max-height: calc(100vh - var(--top-height) - 0.6rem);
     overflow-y: auto;
 }
 
