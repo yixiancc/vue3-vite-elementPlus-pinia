@@ -11,11 +11,11 @@ function logout() {
 <template>
     <div class="navbar-index">
         <div class="navbar-index-title">
-            实训室及设备管理系统
+            lalala
         </div>
         <el-dropdown class="avatar-container" trigger="click" :teleported="false">
             <div class="avatar-wrapper">
-                <div>测试老师</div>
+                <div>lalala</div>
                 <img src="/images/icon.png" class="user-avatar">
             </div>
             <template #dropdown>
