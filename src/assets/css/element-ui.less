@@ -82,25 +82,35 @@
     justify-content: flex-end;
 }
 
-.yn-customize-button-class {
+.customize-button-class {
     width: 100%;
     height: 100%;
     padding: 0;
     border-radius: 0.02rem;
-    background: #9A3433;
+    background: linear-gradient(180deg, #024466 0%, #4489FE 0.01%, #2262D0 100%);
     font-size: inherit;
     color: #fff;
     font-weight: inherit;
     border: none;
+
+    > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .el-icon {
+            top: 0.02rem;
+        }
+    }
 }
 
-.yn-customize-button-class:hover {
-    background: rgba(154, 52, 51, 0.8);
+.customize-button-class:hover {
+    background: linear-gradient(180deg, #024466 0%, #4489FE 0.01%, #2262D0 100%);
     color: #fff;
 }
 
-.yn-customize-button-class:focus {
-    background: rgba(154, 52, 51, 0.8);
+.customize-button-class:focus {
+    background: linear-gradient(180deg, #024466 0%, #4489FE 0.01%, #2262D0 100%);
     color: #fff;
 }
 
