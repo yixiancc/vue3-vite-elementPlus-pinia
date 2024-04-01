@@ -47,7 +47,14 @@ export default defineConfig({
             "/api": {
                 target: '',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, "")
+                rewrite: (path) => path.replace(/^\/api/, ""),
+                // configure: (proxy, options) => {
+                //     proxy.on("proxyReq", (proxyReq, req, res) => {
+                //         const proxyURL = options.target + (options.rewrite ? options.rewrite(req.url) : req.url);
+                //         req.headers["x-req-proxyURL"] = proxyURL; // 设置未生效
+                //         res.setHeader("x-req-proxyURL", proxyURL); // 设置响应头可以看到
+                //     })
+                // }
             }
         },
         open: true,
