@@ -51,6 +51,13 @@ axios.interceptors.response.use(
         if (error.response && error.response.status) {
             switch (error.response.status) {
                 // 其他错误，直接抛出错误提示
+                case 404:
+                    ElMessage({
+                        type: "error",
+                        message: "网络中断或该请求不存在"
+                    });
+                    break
+                    
                 default:
                     ElMessage({
                         type: "error",
