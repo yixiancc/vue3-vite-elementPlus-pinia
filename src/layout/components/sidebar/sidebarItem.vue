@@ -72,7 +72,7 @@ function isExternal(path) {
     return /^(https?:|mailto:|tel:)/.test(path)
 }
 
-import { useRoute } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 
 const route = useRoute()
 
@@ -86,10 +86,16 @@ function getImgSrc(meta) {
         }
     }
 }
+
+const router = useRouter()
+
+function judgeIsHasRoute(item) {
+    return router.hasRoute(item.name)
+}
 </script>
 
 <template>
-    <div v-if="!props.item.hidden">
+    <div v-if="!props.item.hidden && judgeIsHasRoute(props.item)">
         <template
             v-if="isShowChildren(props.item.children, props.item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !props.item.alwaysShow">
             <component :is="linkType" v-bind="linkProps()">
