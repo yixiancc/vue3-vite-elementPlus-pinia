@@ -8,7 +8,7 @@ import equipment1 from "@/assets/images/menu/equipment1.png"
 
 import projectManageSvg from "@/assets/images/menu/projectManage.svg?component"
 
-// 一定要看！！！（需要示例的话，各种属性云南国土pc端、iccc4.0应该都有示例）
+// 一定要看！！！
 // 其中meta中可以存放的字段：
 // title-标题，另外可以写函数，接收参数是路由上的query，例如title: query => { return query.projectName }，用处是想要在面包屑上动态显示上面的值时；
 // elIcon-elementplus中的icon名字，该字段与后续activeImage/unactiveImage互斥，优先会使用elIcon；
