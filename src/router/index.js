@@ -24,7 +24,7 @@ const routes = [
         path: "/login",
         component: () => import("@/views/login.vue"),
         meta: {
-            title: "实训室设备使用及管理系统"
+            title: "管理系统"
         },
         hidden: true
     },
