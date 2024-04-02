@@ -21,7 +21,19 @@ const router = useRouter()
 const customMessage = inject("$customMessage")
 const post = inject("$post")
 
+import { useCommonCache } from "@/store/index.js"
+
+const commonCache = useCommonCache()
+
+import cloneDeep from "lodash.clonedeep"
+
+commonCache.allRoutes = cloneDeep(router.options.routes)
+
 function loginSystem() {
+    commonCache.allRoutes.forEach(data => {
+        router.addRoute(data)
+    })
+    
     isLoading.value = true
     post("", loginForm.value).then(res => {
         localStorage.clear()
@@ -30,12 +42,16 @@ function loginSystem() {
             localStorage.setItem("password", loginForm.value.password)
         }
         localStorage.setItem("token", res.token)
-        localStorage.setItem("companyId", res.companyId)
+        
+        // 若有动态路由相关，可以写在此处，同时登录跳转就可以写到函数里，例如
+        // changeRoutes()
+
         customMessage({
             type: "success",
             content: "登陆成功！",
             duration: 800
         })
+        
         setTimeout(() => {
             router.push("/")
             isLoading.value = false
@@ -45,6 +61,27 @@ function loginSystem() {
         console.log(err)
     })
 }
+
+// function changeRoutes() {
+//     post("").then(res => {
+//         // 从某个接口拿到的，动态路由的相关参数，通过check来判断用户是否能看到
+//         let arr = res
+//         console.log(arr, router)
+//         // 循环arr中找到check是false的项，并判断是否有children，若有继续找check是false的项，以此类推
+//         let findChildren = (arr) => {
+//             arr.forEach(data => {
+//                 if (data.check === false) {
+//                     router.removeRoute(data.url.replace(/\//g, ""))
+//                 }
+//                 if (data.resources && data.resources.length > 0) {
+//                     findChildren(data.resources)
+//                 }
+//             })
+//         }
+        
+//         findChildren(arr)
+//     })
+// }
 </script>
 
 <template>
