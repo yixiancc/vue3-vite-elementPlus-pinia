@@ -6,11 +6,15 @@ export const useCommonCache = defineStore({
     // 定义状态
     state: () => {
         return {
-            // 完整的路由表
-            allRoutes: [],
+            // 用户能访问的路由
+            userRoutes: []
         }
     },
-    persist: true,
+    persist: {
+        key: "digital_laboratory_storeKey",
+        storage: window.sessionStorage,
+        paths: ["userRoutes"]
+    },
     // 定义 getters
     getters: {},
     // 定义 actions
