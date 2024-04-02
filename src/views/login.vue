@@ -14,7 +14,9 @@ if (localStorage.getItem("username")) {
 }
 
 const isLoading = ref(false)
-import router from "@/router/index.js";
+    
+import { useRouter, useRoute } from "vue-router"
+const router = useRouter()
 
 const customMessage = inject("$customMessage")
 const post = inject("$post")
