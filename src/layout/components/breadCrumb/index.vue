@@ -3,9 +3,10 @@ import { compile } from "path-to-regexp"
 import { watch, ref } from "vue"
 import { ArrowRightBold } from "@element-plus/icons-vue"
 
-import router from "@/router/index.js";
-import { useRoute } from "vue-router"
+import { useRouter,useRoute } from "vue-router"
 
+const router = useRouter()
+    
 const route = useRoute()
 
 const levelList = ref([])
