@@ -21,16 +21,8 @@ const router = useRouter()
 const customMessage = inject("$customMessage")
 const post = inject("$post")
 
-import { useCommonCache } from "@/store/index.js"
-
-const commonCache = useCommonCache()
-
-import cloneDeep from "lodash.clonedeep"
-
-commonCache.allRoutes = cloneDeep(router.options.routes)
-
 function loginSystem() {
-    commonCache.allRoutes.forEach(data => {
+    router.options.routes.forEach(data => {
         router.addRoute(data)
     })
     
@@ -62,11 +54,15 @@ function loginSystem() {
     })
 }
 
+// import { useCommonCache } from "@/store/index.js"
+
+// const commonCache = useCommonCache()
+    
 // function changeRoutes() {
 //     post("").then(res => {
 //         // 从某个接口拿到的，动态路由的相关参数，通过check来判断用户是否能看到
 //         let arr = res
-//         console.log(arr, router)
+//         commonCache.userRoutes = arr
 //         // 循环arr中找到check是false的项，并判断是否有children，若有继续找check是false的项，以此类推
 //         let findChildren = (arr) => {
 //             arr.forEach(data => {
