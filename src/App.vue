@@ -1,23 +1,23 @@
 <script setup>
-import { useCommonCache } from "@/store/index.js"
-import router from "@/router/index.js";
+// import { useCommonCache } from "@/store/index.js"
+// import router from "@/router/index.js";
 
-const commonCache = useCommonCache()
+// const commonCache = useCommonCache()
 
-let arr = commonCache.userRoutes
-// 循环arr中找到check是false的项，并判断是否有children，若有继续找check是false的项，以此类推
-let findChildren = (arr) => {
-    arr.forEach(data => {
-        if (data.check === false) {
-            router.removeRoute(data.url.replace(/\//g, ""))
-        }
-        if (data.resources && data.resources.length > 0) {
-            findChildren(data.resources)
-        }
-    })
-}
+// let arr = commonCache.userRoutes
+// // 循环arr中找到check是false的项，并判断是否有children，若有继续找check是false的项，以此类推
+// let findChildren = (arr) => {
+//     arr.forEach(data => {
+//         if (data.check === false) {
+//             router.removeRoute(data.url.replace(/\//g, ""))
+//         }
+//         if (data.resources && data.resources.length > 0) {
+//             findChildren(data.resources)
+//         }
+//     })
+// }
 
-findChildren(arr)
+// findChildren(arr)
 </script>
 
 <template>
