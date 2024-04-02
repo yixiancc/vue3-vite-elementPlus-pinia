@@ -1,6 +1,7 @@
 <script setup>
-import router from "@/router/index.js";
-import { useRoute } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
+
+const router = useRouter()
 const route = useRoute()
 
 function logout() {
