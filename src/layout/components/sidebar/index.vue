@@ -4,7 +4,9 @@ import sidebarItem from "./sidebarItem.vue";
 
 const routes = ref([])
 
-import router from "@/router/index.js";
+import {useRouter, useRoute } from "vue-router"
+
+const router = useRouter()
 
 onMounted(() => {
     routes.value = router.options.routes
@@ -13,8 +15,6 @@ onMounted(() => {
 watch(routes, () => {
     routes.value = router.options.routes
 })
-
-import { useRoute } from "vue-router"
 
 const route = useRoute()
 
