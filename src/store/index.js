@@ -6,7 +6,8 @@ export const useCommonCache = defineStore({
     // 定义状态
     state: () => {
         return {
-            // lalala: "123"
+            // 完整的路由表
+            allRoutes: [],
         }
     },
     persist: true,
