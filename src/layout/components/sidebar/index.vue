@@ -5,8 +5,6 @@ import sidebarItem from "./sidebarItem.vue";
 const routes = ref([])
 
 import router from "@/router/index.js";
-import { useRoute } from 'vue-router'
-const route = useRoute()
 
 onMounted(() => {
     routes.value = router.options.routes
@@ -15,6 +13,10 @@ onMounted(() => {
 watch(routes, () => {
     routes.value = router.options.routes
 })
+
+import { useRoute } from "vue-router"
+
+const route = useRoute()
 
 function activeMenu() {
     const { meta, path } = route
@@ -40,6 +42,12 @@ function activeMenu() {
     })
     return returnPath
 }
+
+function logout() {
+    router.push(`/login?redirect=${ global.$route.fullPath }`)
+}
+
+import logoutSvg from "../../images/logout.svg?component"
 </script>
 
 <template>
@@ -54,16 +62,62 @@ function activeMenu() {
                 :item="route"
             />
         </el-menu>
+        
+        <div class="logout-class">
+            <div @click="logout()">
+                <i>
+                    <logout-svg/>
+                </i>
+                
+                <div>
+                    退出系统
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <style lang="less" scoped>
 .sidebar-index {
     width: 100%;
-    height: 100%;
-    max-height: 100%;
+    height: calc(100% - 0.5rem);
+    max-height: calc(100% - 0.5rem);
     padding: 0.15rem 0.08rem;
-    overflow-y: auto
+    overflow-y: auto;
+    position: relative;
+    
+    .logout-class {
+        position: absolute;
+        bottom: 0.2rem;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        
+        > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--main-color);
+            
+            > i {
+                font-size: 0.16rem;
+                
+                svg {
+                    vertical-align: middle;
+                }
+                
+            }
+            
+            > div {
+                margin-left: 0.08rem;
+                color: var(--main-color);
+                font-size: 0.16rem;
+                font-weight: 400;
+            }
+        }
+    }
 }
 
 :deep(.el-menu) {
@@ -73,11 +127,12 @@ function activeMenu() {
     .el-menu-item, .el-sub-menu__title {
         color: rgba(47, 49, 51, 1);
         
-        img{
+        img {
             width: 0.18rem;
         }
         
         > svg {
+            min-width: 0.18rem;
             font-size: 0.18rem;
             vertical-align: middle;
             width: 0.18rem;
@@ -87,12 +142,15 @@ function activeMenu() {
         > span {
             margin-left: 0.1rem;
             font-size: 0.16rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
     
     .el-menu-item.is-active {
-        background: rgba(154, 52, 51, 1);
-        color: #fff;
+        background: #F2F3F5;
+        color: var(--main-color);
         border-radius: 0.04rem;
     }
     
@@ -102,12 +160,11 @@ function activeMenu() {
         }
         
         .el-menu-item.is-active {
-            background: rgba(154, 52, 51, 1);
-            color: #fff;
+            background: #F2F3F5;
             border-radius: 0.04rem;
             
             span {
-                color: #fff
+                color: var(--main-color);
             }
         }
     }

@@ -2,9 +2,6 @@
 import { ref, computed } from "vue";
 import path from "path-browserify"
 
-import { useRoute } from 'vue-router'
-const route = useRoute()
-
 const props = defineProps({
     item: {
         type: Object,
@@ -74,6 +71,10 @@ function linkProps() {
 function isExternal(path) {
     return /^(https?:|mailto:|tel:)/.test(path)
 }
+
+import { useRoute } from "vue-router"
+
+const route = useRoute()
 
 // 获取当前路由，看是否是当前路由，如果是，返回activeImage，否则返回unactiveImage
 function getImgSrc(meta) {
