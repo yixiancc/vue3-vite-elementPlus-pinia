@@ -36,48 +36,77 @@ function loginSystem() {
         localStorage.setItem("token", res.token)
         
         // 若有动态路由相关，可以写在此处，同时登录跳转就可以写到函数里，例如
-        // changeRoutes()
+        changeRoutes()
 
         customMessage({
             type: "success",
             content: "登陆成功！",
             duration: 800
         })
-        
-        setTimeout(() => {
-            router.push("/")
-            isLoading.value = false
-        }, 500)
     }).catch(err => {
         isLoading.value = false
         console.log(err)
     })
 }
 
-// import { useCommonCache } from "@/store/index.js"
+import { useCommonCache } from "@/store/index.js"
 
-// const commonCache = useCommonCache()
+const commonCache = useCommonCache()
     
-// function changeRoutes() {
-//     post("").then(res => {
-//         // 从某个接口拿到的，动态路由的相关参数，通过check来判断用户是否能看到
-//         let arr = res
-//         commonCache.userRoutes = arr
-//         // 循环arr中找到check是false的项，并判断是否有children，若有继续找check是false的项，以此类推
-//         let findChildren = (arr) => {
-//             arr.forEach(data => {
-//                 if (data.check === false) {
-//                     router.removeRoute(data.url.replace(/\//g, ""))
-//                 }
-//                 if (data.resources && data.resources.length > 0) {
-//                     findChildren(data.resources)
-//                 }
-//             })
-//         }
+function changeRoutes() {
+    post("").then(res => {
+        // 从某个接口拿到的，动态路由的相关参数，通过check来判断用户是否能看到
+        let arr = res
+        commonCache.userRoutes = arr
+        // 循环arr中找到check是false的项，并判断是否有children，若有继续找check是false的项，以此类推
+        let findChildren = (arr) => {
+            arr.forEach(data => {
+                if (data.check === false) {
+                    router.removeRoute(data.url.replace(/\//g, ""))
+                }
+                if (data.resources && data.resources.length > 0) {
+                    findChildren(data.resources)
+                }
+            })
+        }
         
-//         findChildren(arr)
-//     })
-// }
+        findChildren(arr)
+
+        setTimeout(() => {
+            // 用于进入界面，旦有可能上一次登录保留的redirect现在登录后没有权限访问了，所以需要检查一下
+            isLoading.value = false
+            
+            let url = ""
+            
+            let findCanEnterUrl = (arr) => {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].check) {
+                        url = arr[i].url
+                        break
+                    } else {
+                        if (arr[i].resources && arr[i].resources.length > 0) {
+                            findCanEnterUrl(arr[i].resources)
+                        }
+                    }
+                }
+            }
+            
+            if (redirect.value) {
+                if (router.hasRoute(redirect.value.split("/")[2])) {
+                    url = redirect.value
+                } else {
+                    findCanEnterUrl(arr)
+                }
+            } else {
+                findCanEnterUrl(arr)
+            }
+            
+            router.push(url).catch((err) => {
+                console.log(err)
+            })
+        }, 500)
+    })
+}
 </script>
 
 <template>
