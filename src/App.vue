@@ -7,6 +7,7 @@ router.options.routes.forEach(data => {
 
 import { post } from "@/request/http.js"
 
+// 从某个接口拿到的，动态路由的相关参数，通过check来判断用户是否能看到
 post("").then(res => {
     let arr = res
     
