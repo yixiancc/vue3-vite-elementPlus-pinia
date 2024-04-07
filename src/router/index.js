@@ -152,6 +152,7 @@ const router = createRouter({
 
 import { useCommonCache } from "@/store/index.js"
 import { ElMessage } from "element-plus";
+import { post } from "@/request/http.js";
 
 router.beforeEach((to, from, next) => {
     const commonCache = useCommonCache()
