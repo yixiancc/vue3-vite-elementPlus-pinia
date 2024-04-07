@@ -95,10 +95,10 @@ function changeRoutes() {
                 if (router.hasRoute(redirect.value.split("/")[2])) {
                     url = redirect.value
                 } else {
-                    findCanEnterUrl(arr)
+                    url = "/"
                 }
             } else {
-                findCanEnterUrl(arr)
+                url = "/"
             }
             
             router.push(url).catch((err) => {
