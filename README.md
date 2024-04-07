@@ -16,6 +16,8 @@ customMessage({
 
 ### 在src/request/http.js中自定义了接口调用方式以及拦截器处理方式，可查看
 
+### 另外，项目中有动态路由，页面模块权限的相关处理，可供参考
+
 ## Project setup
 ```
 npm install
