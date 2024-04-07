@@ -150,16 +150,40 @@ const router = createRouter({
     routes: routes
 })
 
+import { useCommonCache } from "@/store/index.js"
+import { ElMessage } from "element-plus";
+
 router.beforeEach((to, from, next) => {
+    const commonCache = useCommonCache()
+
     /* 路由发生变化修改页面title */
     if (to.meta.title) {
-        if (to.meta.title instanceof Function) {
-            document.title = to.meta.title(to.query);
+        document.title = to.meta.title;
+    }
+
+    // 路由守卫，在进入页面前判断是否有token，没有则跳转至登录页，有则判断是否有权限进入该页面
+    if (to.name == "login") {
+        next()
+    } else if (!localStorage.getItem("token")) {
+        next({ name: "login" })
+    } else {
+        let exist = await commonCache.judgeAuthority(to)
+        if (!exist) {
+            ElMessage({
+                type: "error",
+                message: "您没有权限进入该页面，已为您跳转至上一个页面"
+            });
+            next({ name: from.name })
         } else {
-            document.title = to.meta.title;
+            // 此处的代码是用于请求页面中的模块是否显示，需要后端配合
+            post("", {
+                url: to.name
+            }).then(res => {
+                commonCache.temporaryModulePermission = res
+            })
+            next()
         }
     }
-    next();
 });
 
 export default router;
