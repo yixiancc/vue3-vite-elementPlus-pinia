@@ -92,7 +92,7 @@ function changeRoutes() {
             }
             
             if (redirect.value) {
-                if (router.hasRoute(redirect.value.split("/")[2])) {
+                if (router.hasRoute(redirect.value.split("/")[redirect.value.split("/").length - 1])) {
                     url = redirect.value
                 } else {
                     url = "/"
