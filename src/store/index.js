@@ -7,7 +7,8 @@ export const useCommonCache = defineStore({
     state: () => {
         return {
             // 用户能访问的路由
-            userRoutes: []
+            userRoutes: [],
+            temporaryModulePermission: []
         }
     },
     persist: {
