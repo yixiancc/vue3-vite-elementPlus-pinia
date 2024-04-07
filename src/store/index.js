@@ -20,12 +20,12 @@ export const useCommonCache = defineStore({
     // 定义 actions
     actions: {
         // 判断用户是否能够访问，利用router.hasRoute，因为不能访问的已经remove了
-        // judgeAuthority(to) {
-        //     return new Promise((resolve, reject) => {
-        //         const router = useRouter()
-        //         resolve(router.hasRoute(to.name))
-        //     })
-        // }
+        judgeAuthority(to) {
+            return new Promise((resolve, reject) => {
+                const router = useRouter()
+                resolve(router.hasRoute(to.name))
+            })
+        }
     }
 })
 
